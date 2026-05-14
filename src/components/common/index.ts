@@ -5,5 +5,6 @@ export { Modal, type ModalProps } from './Modal';
 export { Alert, ConfirmDialog, type AlertProps, type ConfirmDialogProps } from './Dialog';
 export { UsernameDisplay, type UsernameDisplayProps } from './UsernameDisplay';
 export { EmojiText } from './EmojiText';
-export { ProfileCard, type ProfileCardProps } from './ProfileCard';
-export { PunishModal, type PunishModalProps } from './PunishModal';
+export { IconButton, type IconButtonProps } from './IconButton';
+export { DeviceCard, type DeviceCardProps } from './DeviceCard';
+export { Toggle, type ToggleProps } from './Toggle';

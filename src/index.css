@@ -1,3 +1,5 @@
+@import url("./fonts.css");
+
 :root {
   --font-family-base: 'DM Sans', sans-serif;
   --font-family-mono: 'DM Mono', monospace;
@@ -14,6 +16,7 @@
 
   --text-primary: hsla(180, 67%, 99%, 1);
   --text-muted: hsla(180, 67%, 99%, 0.5);
+  --text-muted-opaque: rgb(152, 154, 154);
   --text-dim: hsla(180, 67%, 99%, 0.25);
 
   --accent-green: hsla(129, 77%, 43%, 0.75);
