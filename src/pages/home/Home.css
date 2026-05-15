@@ -140,6 +140,7 @@
   align-items: flex-start;
   justify-content: center;
   padding-top: 2rem;
+  gap: 1.8rem;
 }
 
 .home-panel {
@@ -206,8 +207,8 @@
 
 .settings-sidebar__item--active {
   color: var(--text-primary);
-  border-color: color-mix(in srgb, var(--status-error) 45%, transparent);
-  background: color-mix(in srgb, var(--status-error) 28%, var(--bg-base));
+  border-color: var(--border-subtle);
+  background: color-mix(in srgb, var(--bg-elevated) 64%, transparent);
 }
 
 .settings-content {

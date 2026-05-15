@@ -5,8 +5,9 @@ import {
   IconAntennaBars4,
   IconAntennaBars5,
   IconAntennaBarsOff,
-  IconBluetooth,
+  IconBluetoothConnected,
   IconBluetoothOff,
+  IconSquareRotated,
 } from '@tabler/icons-react';
 import './DeviceCard.css';
 
@@ -17,6 +18,7 @@ export interface DeviceCardProps {
   signalStrength: number; // 0 to 5
   connected: boolean;
   model?: string;
+  modelIcon?: React.ReactNode;
 }
 
 export const DeviceCard = ({
@@ -26,6 +28,7 @@ export const DeviceCard = ({
   signalStrength,
   connected,
   model,
+  modelIcon,
 }: DeviceCardProps) => {
   return (
     <div
@@ -36,7 +39,14 @@ export const DeviceCard = ({
         <div className="device-card__text">
           <span className="device-card__name">{name}</span>
           {model ? (
-            <span className="device-card__model">{model}</span>
+            <div className="device-card__model-info">
+              {modelIcon ? (
+                <span className="device-card__model-icon">{modelIcon}</span>
+              ) : (
+                <IconSquareRotated className="device-card__model-icon" size={15} />
+              )}
+              <span className="device-card__model">{model}</span>
+            </div>
           ) : null}
         </div>
         <div className="device-card__status-icons" aria-label="Device status">
@@ -57,7 +67,7 @@ export const DeviceCard = ({
           </span>
           {connected ? (
             <span className="device-card__status-icon" title="Bluetooth">
-              <IconBluetooth size={16} />
+              <IconBluetoothConnected size={16} />
             </span>
           ) : (
             <span className="device-card__status-icon" title="Not connected">

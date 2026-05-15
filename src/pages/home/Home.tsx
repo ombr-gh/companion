@@ -6,6 +6,9 @@ import {
   IconInfoCircle,
   IconMessageCircle,
   IconSettings,
+  IconSquareRotated,
+  IconSquareRotatedFilled,
+  IconSquareRoundedFilled,
   IconUserCircle,
 } from '@tabler/icons-react';
 import { DeviceCard, IconButton, Toggle } from '../../components/common';
@@ -129,7 +132,38 @@ export default function Home() {
       <main className="home-content">
         {activeNav === 'devices' && (
           <div className="device-card-container">
-            <DeviceCard name="Hayden's Geo" model="Geo Mk1" elevated={true} signalStrength={4} connected={true}></DeviceCard>
+            <DeviceCard
+              name="Hayden's Geo"
+              model="Geo Mk1"
+              modelIcon={
+                <IconSquareRotated className="device-card__model-icon" size={15} />
+              }
+              elevated={true}
+              signalStrength={4}
+              connected={true}
+            />
+
+            <DeviceCard
+              name="Daniel's Geo"
+              model="Geo Mk2"
+              modelIcon={
+                <IconSquareRotatedFilled className="device-card__model-icon" size={15} />
+              }
+              elevated={true}
+              signalStrength={5}
+              connected={true}
+            />
+
+            <DeviceCard
+              name="Max's Geo"
+              model="Geo Mk3"
+              modelIcon={
+                <IconSquareRoundedFilled className="device-card__model-icon" size={15} />
+              }
+              elevated={true}
+              signalStrength={3}
+              connected={true}
+            />
           </div>
         )}
 
