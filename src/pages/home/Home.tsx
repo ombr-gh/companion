@@ -13,9 +13,7 @@ export default function Home() {
         <DeviceCard
           name="Hayden's Geo"
           model="Geo Mk1"
-          modelIcon={
-            <IconSquareRotated className="device-card__model-icon" size={15} />
-          }
+          modelIcon={<IconSquareRotated size={15} />}
           elevated={true}
           signalStrength={4}
           connected={true}
@@ -24,9 +22,7 @@ export default function Home() {
         <DeviceCard
           name="Daniel's Geo"
           model="Geo Mk2"
-          modelIcon={
-            <IconSquareRotatedFilled className="device-card__model-icon" size={15} />
-          }
+          modelIcon={<IconSquareRotatedFilled size={15} />}
           elevated={true}
           signalStrength={5}
           connected={true}
@@ -35,9 +31,7 @@ export default function Home() {
         <DeviceCard
           name="Max's Geo"
           model="Geo Mk3"
-          modelIcon={
-            <IconSquareRoundedFilled className="device-card__model-icon" size={15} />
-          }
+          modelIcon={<IconSquareRoundedFilled size={15} />}
           elevated={true}
           signalStrength={3}
           connected={true}

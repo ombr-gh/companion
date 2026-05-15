@@ -43,7 +43,9 @@ export const DeviceCard = ({
               {modelIcon ? (
                 <span className="device-card__model-icon">{modelIcon}</span>
               ) : (
-                <IconSquareRotated className="device-card__model-icon" size={15} />
+                <span className="device-card__model-icon">
+                  <IconSquareRotated size={15} />
+                </span>
               )}
               <span className="device-card__model">{model}</span>
             </div>
