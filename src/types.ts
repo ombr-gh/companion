@@ -1,1 +1,1 @@
-export type CurrentPage = 'home' | 'stats' | 'settings' | 'profile';
+export type CurrentPage = 'home' | 'stats' | 'settings' | 'profile' | 'device';

@@ -9,12 +9,25 @@
     radial-gradient(280px 180px at 50% 4%, color-mix(in srgb, var(--bg-elevated) 42%, transparent), transparent 75%),
     linear-gradient(180deg, color-mix(in srgb, var(--bg-elevated) 84%, transparent) 0%, color-mix(in srgb, var(--bg-surface) 90%, transparent) 100%);
   box-shadow: 0 22px 44px color-mix(in srgb, var(--bg-base) 74%, transparent);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
 
-  :is(--elevated) {
-    transform: translateY(-1px);
-    box-shadow: 0 30px 54px color-mix(in srgb, var(--bg-base) 78%, transparent);
-  }
+.device-card--elevated {
+  transform: translateY(-1px);
+  box-shadow: 0 30px 54px color-mix(in srgb, var(--bg-base) 78%, transparent);
+}
+
+.device-card--clickable {
+  cursor: pointer;
+}
+
+.device-card--clickable:hover {
+  border-color: var(--border-focus);
+}
+
+.device-card--clickable:focus-visible {
+  outline: 2px solid var(--status-success);
+  outline-offset: 4px;
 }
 
 .device-card__meta {

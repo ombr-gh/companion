@@ -30,10 +30,24 @@ export const DeviceCard = ({
   model,
   modelIcon,
 }: DeviceCardProps) => {
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    if (!onClick) {
+      return;
+    }
+
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      onClick();
+    }
+  };
+
   return (
     <div
-      className={`device-card ${elevated ? 'card--elevated' : ''}`}
+      className={`device-card ${elevated ? 'device-card--elevated' : ''} ${onClick ? 'device-card--clickable' : ''}`}
       onClick={onClick}
+      onKeyDown={handleKeyDown}
+      role={onClick ? 'button' : undefined}
+      tabIndex={onClick ? 0 : undefined}
     >
       <div className="device-card__meta">
         <div className="device-card__text">

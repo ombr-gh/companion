@@ -5,11 +5,14 @@ import Home from './pages/home/Home';
 import StatsPage from './pages/stats/Stats';
 import SettingsPage from './pages/settings/Settings';
 import ProfilePage from './pages/profile/Profile';
+import DevicePage from './pages/device/Device';
 import { IconButton } from './components/common';
+import { type DeviceInfo } from './lib/devices';
 import './App.css';
 
 function App() {
   const [page, setPage] = useState<CurrentPage>('home');
+  const [selectedDevice, setSelectedDevice] = useState<DeviceInfo | null>(null);
   const devicesTabRef = useRef<HTMLButtonElement | null>(null);
   const statsTabRef = useRef<HTMLButtonElement | null>(null);
   const [tabIndicator, setTabIndicator] = useState({ left: 0, width: 0 });
@@ -48,6 +51,15 @@ function App() {
     '--tab-indicator-left': `${tabIndicator.left}px`,
     '--tab-indicator-width': `${tabIndicator.width}px`,
   } as CSSProperties;
+
+  const openDevice = (device: DeviceInfo) => {
+    setSelectedDevice(device);
+    setPage('device');
+  };
+
+  const goBackToDevices = () => {
+    setPage('home');
+  };
 
   return (
     <div
@@ -108,10 +120,13 @@ function App() {
       </header>
 
       <main className="app-content">
-        {page === 'home' && <Home />}
+        {page === 'home' && <Home onOpenDevice={openDevice} />}
         {page === 'stats' && <StatsPage />}
         {page === 'settings' && <SettingsPage />}
         {page === 'profile' && <ProfilePage />}
+        {page === 'device' && selectedDevice ? (
+          <DevicePage device={selectedDevice} onBack={goBackToDevices} />
+        ) : null}
       </main>
     </div>
   );
