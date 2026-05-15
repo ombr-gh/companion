@@ -67,7 +67,11 @@ export default function Home() {
       <header className="home-topbar">
         <div className="home-topbar__left">
           <span className="brand-mark">
-            O
+            <img
+              src={new URL('../../assets/logo.svg', import.meta.url).href}
+              alt="Nimbus"
+              className="brand-mark__img"
+            />
           </span>
 
           <nav
@@ -125,7 +129,7 @@ export default function Home() {
       <main className="home-content">
         {activeNav === 'devices' && (
           <div className="device-card-container">
-            <DeviceCard name="Hayden's Geo" elevated={true} signalStrength={4} connected={true}></DeviceCard>
+            <DeviceCard name="Hayden's Geo" model="Geo Mk1" elevated={true} signalStrength={4} connected={true}></DeviceCard>
           </div>
         )}
 

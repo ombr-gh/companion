@@ -16,6 +16,7 @@ export interface DeviceCardProps {
   elevated?: boolean;
   signalStrength: number; // 0 to 5
   connected: boolean;
+  model?: string;
 }
 
 export const DeviceCard = ({
@@ -24,6 +25,7 @@ export const DeviceCard = ({
   elevated = false,
   signalStrength,
   connected,
+  model,
 }: DeviceCardProps) => {
   return (
     <div
@@ -31,7 +33,12 @@ export const DeviceCard = ({
       onClick={onClick}
     >
       <div className="device-card__meta">
-        <span className="device-card__name">{name}</span>
+        <div className="device-card__text">
+          <span className="device-card__name">{name}</span>
+          {model ? (
+            <span className="device-card__model">{model}</span>
+          ) : null}
+        </div>
         <div className="device-card__status-icons" aria-label="Device status">
           <span className="device-card__status-icon" title="Wireless signal">
             {signalStrength >= 5 ? (
@@ -60,8 +67,12 @@ export const DeviceCard = ({
         </div>
       </div>
 
-      <div className="device-card__hero" role="img" aria-label={`${name} mouse`}>
-        <div className="device-card__mouse"></div>
+      <div className="device-card__hero" role="img" aria-label={`${name} image`}>
+        <img
+          className="device-card__image"
+          src={`https://picsum.photos/seed/${encodeURIComponent(name)}/420/640`}
+          alt={`${name}`}
+        />
       </div>
     </div>
   );

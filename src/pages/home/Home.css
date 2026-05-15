@@ -48,6 +48,13 @@
   user-select: none;
 }
 
+.brand-mark__img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+}
+
 .home-tabs {
   display: flex;
   align-items: center;
