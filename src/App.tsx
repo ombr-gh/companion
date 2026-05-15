@@ -3,12 +3,12 @@ import { CurrentPage } from './types';
 import Home from './pages/home/Home';
 
 function App() {
-  const [page, setPage] = useState<CurrentPage>('home');
+  const [page] = useState<CurrentPage>('home');
 
   return (
     <>
       {page == 'home' && (
-        <Home setPage={setPage}></Home>
+        <Home></Home>
       )}
     </>
   );

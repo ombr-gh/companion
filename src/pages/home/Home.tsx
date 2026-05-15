@@ -9,7 +9,6 @@ import {
   IconUserCircle,
 } from '@tabler/icons-react';
 import { DeviceCard, IconButton, Toggle } from '../../components/common';
-import { PageProps } from '../types';
 import './Home.css';
 
 type SettingsSection = 'general' | 'updates' | 'feedback' | 'analytics' | 'about';
@@ -20,9 +19,7 @@ type ToggleState = {
   recommendations: boolean;
 };
 
-export default function Home({
-  setPage,
-}: PageProps) {
+export default function Home() {
   const [activeNav, setActiveNav] = useState<'devices' | 'stats' | 'settings' | 'profile'>('devices');
   const [activePrimaryNav, setActivePrimaryNav] = useState<'devices' | 'stats'>('devices');
   const [activeSettingsNav, setActiveSettingsNav] = useState<SettingsSection>('general');
