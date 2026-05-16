@@ -6,10 +6,11 @@ import styles from './Home.module.css';
 
 interface HomeProps {
   readonly devices: DeviceInfo[];
+  readonly isSearchingForGeoDevices: boolean;
   readonly onOpenDevice: (device: DeviceInfo) => void;
 }
 
-export default function Home({ devices, onOpenDevice }: Readonly<HomeProps>) {
+export default function Home({ devices, isSearchingForGeoDevices, onOpenDevice }: Readonly<HomeProps>) {
   function getModelIcon(id: string): ReactNode {
     switch (id) {
       case 'geo-mk1':
@@ -42,8 +43,17 @@ export default function Home({ devices, onOpenDevice }: Readonly<HomeProps>) {
         </div>
       ) : (
         <div className={styles['home-page__empty-state']}>
-          <h1>No Geo devices found</h1>
-          <p>Please wait for your device to be found and make sure it's powered on and within range.</p>
+          {isSearchingForGeoDevices ? (
+            <>
+              <h1>Searching for Geo devices</h1>
+              <p>Please wait while nearby devices are detected.</p>
+            </>
+          ) : (
+            <>
+              <h1>No Geo devices found</h1>
+              <p>Please wait for your device to be found and make sure it's powered on and within range.</p>
+            </>
+          )}
         </div>
       )}
     </div>

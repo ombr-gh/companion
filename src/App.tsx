@@ -16,6 +16,7 @@ function App() {
   const [page, setPage] = useState<CurrentPage>('home');
   const [selectedDevice, setSelectedDevice] = useState<DeviceInfo | null>(null);
   const [devices, setDevices] = useState<DeviceInfo[]>([]);
+  const [isSearchingForGeoDevices, setIsSearchingForGeoDevices] = useState(true);
   const devicesTabRef = useRef<HTMLButtonElement | null>(null);
   const statsTabRef = useRef<HTMLButtonElement | null>(null);
   const [tabIndicator, setTabIndicator] = useState({ left: 0, width: 0 });
@@ -68,6 +69,10 @@ function App() {
         }
       } catch (error) {
         console.error('Failed to load BLE devices', error);
+      } finally {
+        if (!cancelled) {
+          setIsSearchingForGeoDevices(false);
+        }
       }
     };
 
@@ -177,7 +182,13 @@ function App() {
       </header>
 
       <main className={styles['app-content']}>
-        {page === 'home' && <Home devices={devices} onOpenDevice={openDevice} />}
+        {page === 'home' && (
+          <Home
+            devices={devices}
+            isSearchingForGeoDevices={isSearchingForGeoDevices}
+            onOpenDevice={openDevice}
+          />
+        )}
         {page === 'stats' && <StatsPage />}
         {page === 'settings' && <SettingsPage />}
         {page === 'profile' && <ProfilePage />}
