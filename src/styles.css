@@ -8,7 +8,7 @@
   src: url("./assets/fonts/DM-Mono.ttf") format("truetype");
 }
 
-:global(:root) {
+:root {
   --font-family-base: "DM Sans", sans-serif;
   --font-family-mono: "DM Mono", monospace;
 
@@ -47,21 +47,21 @@
   --status-error: hsl(4, 100%, 71%);
 }
 
-:global(*) {
+* {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
   -webkit-font-smoothing: antialiased;
 }
 
-:global(html),
-:global(body),
-:global(#root) {
+html,
+body,
+#root {
   width: 100%;
   height: 100%;
 }
 
-:global(body) {
+body {
   color: var(--text-primary);
   font-family: var(--font-family-base);
   font-size: 1rem;
@@ -73,7 +73,7 @@
   background-color: var(--bg-base);
 }
 
-:global(img.emoji) {
+img.emoji {
   height: 1em;
   width: 1em;
   margin: 0 0.05em 0 0.1em;
@@ -81,32 +81,32 @@
   user-select: none;
 }
 
-:global(button),
-:global(input),
-:global(textarea),
-:global(select) {
+button,
+input,
+textarea,
+select {
   font: inherit;
 }
 
-:global(button:focus-visible),
-:global(input:focus-visible),
-:global(textarea:focus-visible),
-:global(select:focus-visible) {
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
   outline: none;
 }
 
-:global(body::-webkit-scrollbar) {
+body::-webkit-scrollbar {
   width: 0.5rem;
 }
 
-:global(body::-webkit-scrollbar-thumb) {
+body::-webkit-scrollbar-thumb {
   background: var(--text-dim);
   border: 2px solid transparent;
   background-clip: padding-box;
   border-radius: 999px;
 }
 
-:global(body::-webkit-scrollbar-thumb:hover) {
+body::-webkit-scrollbar-thumb:hover {
   background: var(--text-muted);
   border: 2px solid transparent;
   background-clip: padding-box;

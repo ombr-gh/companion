@@ -45,7 +45,7 @@ const cssModulesCompat = {
 }
 
 export default defineConfig([
-  globalIgnores(['dist', 'src-tauri']),
+  globalIgnores(['dist', 'src-tauri', '**/*.d.css.ts']),
   {
     files: ['**/*.{ts,tsx}'],
     extends: [
