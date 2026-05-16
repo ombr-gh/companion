@@ -12,14 +12,12 @@ export interface DeviceInfo {
   signalStrength: number;
   connected: boolean;
   statusLabel: string;
-  location: string;
   lastSeenMinutesAgo: number;
   firmware: string;
   batteryPercent: number;
   temperatureC: number;
+  humidityPercent: number;
   uptimeHours: number;
-  pairingState: string;
-  activity: string;
 }
 
 export const deviceModels: Record<DeviceModelId, DeviceModel> = {
@@ -55,14 +53,12 @@ export const devices: DeviceInfo[] = [
     signalStrength: 4,
     connected: true,
     statusLabel: 'Online and reporting normally',
-    location: 'North Terrace, Portland',
     lastSeenMinutesAgo: 2,
     firmware: 'v2.8.4',
     batteryPercent: 84,
     temperatureC: 21.4,
+    humidityPercent: 55,
     uptimeHours: 412,
-    pairingState: 'Paired with phone and desktop',
-    activity: 'Collected 124 new location samples today',
   },
   {
     id: 'daniels-geo',
@@ -71,14 +67,12 @@ export const devices: DeviceInfo[] = [
     signalStrength: 5,
     connected: true,
     statusLabel: 'Strong connection and healthy battery',
-    location: 'Studio District, Seattle',
     lastSeenMinutesAgo: 1,
     firmware: 'v3.0.1',
     batteryPercent: 91,
     temperatureC: 20.1,
+    humidityPercent: 60,
     uptimeHours: 227,
-    pairingState: 'Linked to companion and cloud sync',
-    activity: 'Completed a route sync 12 minutes ago',
   },
   {
     id: 'maxs-geo',
@@ -87,14 +81,12 @@ export const devices: DeviceInfo[] = [
     signalStrength: 3,
     connected: true,
     statusLabel: 'Stable connection with moderate signal strength',
-    location: 'Harbor Walk, San Francisco',
     lastSeenMinutesAgo: 3,
     firmware: 'v2.9.7',
     batteryPercent: 76,
     temperatureC: 22,
+    humidityPercent: 55,
     uptimeHours: 138,
-    pairingState: 'Paired and awaiting a firmware update',
-    activity: 'Logged 18 handoffs in the last hour',
   },
 ];
 

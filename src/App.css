@@ -20,6 +20,8 @@
   border-bottom: 1px solid var(--border-subtle);
   background: color-mix(in srgb, var(--bg-base) 80%, transparent);
   backdrop-filter: blur(8px);
+  position: relative;
+  z-index: 2;
 }
 
 .app-topbar__left,
