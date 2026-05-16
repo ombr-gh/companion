@@ -1,10 +1,10 @@
 import { Card, CardHeader, CardBody } from '../../components/common';
-import './Stats.css';
+import styles from './Stats.module.css';
 
 export default function StatsPage() {
   return (
-    <section className="stats-page" aria-label="Stats">
-      <Card elevated className="stats-page__card">
+    <section className={styles['stats-page']} aria-label="Stats">
+      <Card elevated className={styles['stats-page__card']}>
         <CardHeader>
           <h1>Stats</h1>
         </CardHeader>

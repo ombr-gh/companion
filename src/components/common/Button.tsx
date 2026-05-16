@@ -1,4 +1,4 @@
-import './Button.css';
+import styles from './Button.module.css';
 
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'primary' | 'secondary' | 'danger';
@@ -17,13 +17,13 @@ export const Button = ({
 }: ButtonProps) => {
   return (
     <button
-      className={`button button--${variant} ${fullWidth ? 'button--full-width' : ''} ${className}`}
+      className={`${styles.button} ${styles[`button--${variant}`]} ${fullWidth ? styles['button--full-width'] : ''} ${className}`.trim()}
       disabled={disabled || isLoading}
       {...props}
     >
       {isLoading ? (
-        <span className="button__loader">
-          <span className="button__loader-spinner" />
+        <span className={styles.button__loader}>
+          <span className={styles['button__loader-spinner']} />
         </span>
       ) : (
         children

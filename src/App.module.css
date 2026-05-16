@@ -5,8 +5,17 @@
   height: 100%;
   overflow: hidden;
   background:
-    radial-gradient(1100px 500px at 50% -180px, color-mix(in srgb, var(--status-error) 12%, transparent), transparent 70%),
-    linear-gradient(180deg, var(--bg-base) 0%, color-mix(in srgb, var(--bg-base) 88%, black) 24%, color-mix(in srgb, var(--bg-base) 92%, black) 100%);
+    radial-gradient(
+      1100px 500px at 50% -180px,
+      color-mix(in srgb, var(--status-error) 12%, transparent),
+      transparent 70%
+    ),
+    linear-gradient(
+      180deg,
+      var(--bg-base) 0%,
+      color-mix(in srgb, var(--bg-base) 88%, black) 24%,
+      color-mix(in srgb, var(--bg-base) 92%, black) 100%
+    );
 }
 
 .app-topbar {
@@ -121,7 +130,9 @@
   background: color-mix(in srgb, var(--bg-elevated) 78%, transparent);
   color: var(--text-muted-opaque);
   cursor: pointer;
-  transition: color 0.2s ease, border-color 0.2s ease;
+  transition:
+    color 0.2s ease,
+    border-color 0.2s ease;
 }
 
 .app-icon-button--active {

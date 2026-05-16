@@ -1,4 +1,4 @@
-import './toggle.css';
+import styles from './Toggle.module.css';
 
 export interface ToggleProps {
   checked: boolean;
@@ -6,11 +6,11 @@ export interface ToggleProps {
   ariaPressed?: boolean;
 }
 
-export function Toggle({ checked, onChange, ariaPressed }: ToggleProps) {
+export function Toggle({ checked, onChange, ariaPressed }: Readonly<ToggleProps>) {
   return (
     <button
       type="button"
-      className={`settings-switch ${checked ? 'settings-switch--on' : ''}`}
+      className={`${styles['settings-switch']} ${checked ? styles['settings-switch--on'] : ''}`.trim()}
       onClick={onChange}
       aria-pressed={ariaPressed ?? checked}
     >

@@ -1,7 +1,7 @@
-import './Modal.css';
 import { type ReactNode, useEffect } from 'react';
 import { Button } from './Button';
 import { IconX } from '@tabler/icons-react';
+import styles from './Modal.module.css';
 
 export interface ModalProps {
   isOpen: boolean;
@@ -54,19 +54,19 @@ export const Modal = ({
   };
 
   return (
-    <div className="modal-backdrop" onClick={handleBackdropClick}>
-      <div className={`modal modal--${size}`}>
+    <div className={styles['modal-backdrop']} onClick={handleBackdropClick}>
+      <div className={`${styles.modal} ${styles[`modal--${size}`]}`}>
         {title && (
-          <div className="modal__header">
-            <h2 className="modal__title">{title}</h2>
-            <button className="modal__close" onClick={onClose} aria-label="Close modal">
+          <div className={styles['modal__header']}>
+            <h2 className={styles['modal__title']}>{title}</h2>
+            <button className={styles['modal__close']} onClick={onClose} aria-label="Close modal">
               <IconX size={20} />
             </button>
           </div>
         )}
-        {children && <div className="modal__body">{children}</div>}
+        {children && <div className={styles['modal__body']}>{children}</div>}
         {(showCancel || onConfirm) && (
-          <div className="modal__footer">
+          <div className={styles['modal__footer']}>
             {showCancel && (
               <Button variant="secondary" onClick={onClose}>
                 {cancelText}

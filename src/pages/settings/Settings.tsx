@@ -7,7 +7,7 @@ import {
   IconMessageCircle,
 } from '@tabler/icons-react';
 import { Toggle } from '../../components/common';
-import './Settings.css';
+import styles from './Settings.module.css';
 
 type SettingsSection = 'general' | 'updates' | 'feedback' | 'analytics' | 'about';
 
@@ -30,11 +30,11 @@ export default function SettingsPage() {
   };
 
   return (
-    <section className="settings-page" aria-label="Settings">
-      <aside className="settings-page__sidebar">
-        <nav className="settings-page__nav" aria-label="Settings sections">
+    <section className={styles['settings-page']} aria-label="Settings">
+      <aside className={styles['settings-page__sidebar']}>
+        <nav className={styles['settings-page__nav']} aria-label="Settings sections">
           <button
-            className={`settings-page__item ${activeSection === 'general' ? 'settings-page__item--active' : ''}`}
+            className={`${styles['settings-page__item']} ${activeSection === 'general' ? styles['settings-page__item--active'] : ''}`.trim()}
             type="button"
             onClick={() => setActiveSection('general')}
           >
@@ -42,7 +42,7 @@ export default function SettingsPage() {
             General
           </button>
           <button
-            className={`settings-page__item ${activeSection === 'updates' ? 'settings-page__item--active' : ''}`}
+            className={`${styles['settings-page__item']} ${activeSection === 'updates' ? styles['settings-page__item--active'] : ''}`.trim()}
             type="button"
             onClick={() => setActiveSection('updates')}
           >
@@ -50,7 +50,7 @@ export default function SettingsPage() {
             Updates
           </button>
           <button
-            className={`settings-page__item ${activeSection === 'feedback' ? 'settings-page__item--active' : ''}`}
+            className={`${styles['settings-page__item']} ${activeSection === 'feedback' ? styles['settings-page__item--active'] : ''}`.trim()}
             type="button"
             onClick={() => setActiveSection('feedback')}
           >
@@ -58,7 +58,7 @@ export default function SettingsPage() {
             Share Feedback
           </button>
           <button
-            className={`settings-page__item ${activeSection === 'analytics' ? 'settings-page__item--active' : ''}`}
+            className={`${styles['settings-page__item']} ${activeSection === 'analytics' ? styles['settings-page__item--active'] : ''}`.trim()}
             type="button"
             onClick={() => setActiveSection('analytics')}
           >
@@ -66,7 +66,7 @@ export default function SettingsPage() {
             Analytics
           </button>
           <button
-            className={`settings-page__item ${activeSection === 'about' ? 'settings-page__item--active' : ''}`}
+            className={`${styles['settings-page__item']} ${activeSection === 'about' ? styles['settings-page__item--active'] : ''}`.trim()}
             type="button"
             onClick={() => setActiveSection('about')}
           >
@@ -76,23 +76,30 @@ export default function SettingsPage() {
         </nav>
       </aside>
 
-      <div className="settings-page__content">
-        <h3 className="settings-page__title">
-          {activeSection === 'general'
-            ? 'General Settings'
-            : activeSection === 'updates'
-              ? 'Updates'
-              : activeSection === 'feedback'
-                ? 'Share Feedback'
-                : activeSection === 'analytics'
-                  ? 'Analytics'
-                  : 'About'}
+      <div className={styles['settings-page__content']}>
+        <h3 className={styles['settings-page__title']}>
+          {(() => {
+            switch (activeSection) {
+              case 'general':
+                return 'General Settings';
+              case 'updates':
+                return 'Updates';
+              case 'feedback':
+                return 'Share Feedback';
+              case 'analytics':
+                return 'Analytics';
+              case 'about':
+                return 'About';
+              default:
+                return '';
+            }
+          })()}
         </h3>
         {activeSection === 'general' && (
           <>
-            <div className="settings-page__group">
-              <div className="settings-page__row">
-                <div className="settings-page__copy">
+            <div className={styles['settings-page__group']}>
+              <div className={styles['settings-page__row']}>
+                <div className={styles['settings-page__copy']}>
                   <h4>Launch app on login</h4>
                   <p>Always start after logging in</p>
                 </div>
@@ -103,13 +110,13 @@ export default function SettingsPage() {
               </div>
             </div>
 
-            <hr className="settings-page__divider" />
+            <hr className={styles['settings-page__divider']} />
 
-            <div className="settings-page__group">
-              <h4 className="settings-page__group-title">Notifications</h4>
+            <div className={styles['settings-page__group']}>
+              <h4 className={styles['settings-page__group-title']}>Notifications</h4>
 
-              <div className="settings-page__row">
-                <div className="settings-page__copy">
+              <div className={styles['settings-page__row']}>
+                <div className={styles['settings-page__copy']}>
                   <h4>System Notifications</h4>
                   <p>Allow desktop notifications</p>
                 </div>
@@ -119,8 +126,8 @@ export default function SettingsPage() {
                 />
               </div>
 
-              <div className="settings-page__row">
-                <div className="settings-page__copy">
+              <div className={styles['settings-page__row']}>
+                <div className={styles['settings-page__copy']}>
                   <h4>Recommendations</h4>
                   <p>Selectively recommend devices and experiences that are relevant to you</p>
                 </div>

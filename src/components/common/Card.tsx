@@ -1,5 +1,5 @@
-import './Card.css';
 import type { ReactNode } from 'react';
+import styles from './Card.module.css';
 
 export interface CardProps {
   children: ReactNode;
@@ -11,7 +11,7 @@ export interface CardProps {
 export const Card = ({ children, className = '', onClick, elevated = false }: CardProps) => {
   return (
     <div
-      className={`card ${elevated ? 'card--elevated' : ''} ${className}`}
+      className={`${styles.card} ${elevated ? styles['card--elevated'] : ''} ${className}`.trim()}
       onClick={onClick}
     >
       {children}
@@ -25,7 +25,7 @@ export interface CardHeaderProps {
 }
 
 export const CardHeader = ({ children, className = '' }: CardHeaderProps) => {
-  return <div className={`card__header ${className}`}>{children}</div>;
+  return <div className={`${styles['card__header']} ${className}`.trim()}>{children}</div>;
 };
 
 export interface CardBodyProps {
@@ -34,7 +34,7 @@ export interface CardBodyProps {
 }
 
 export const CardBody = ({ children, className = '' }: CardBodyProps) => {
-  return <div className={`card__body ${className}`}>{children}</div>;
+  return <div className={`${styles['card__body']} ${className}`.trim()}>{children}</div>;
 };
 
 export interface CardFooterProps {
@@ -43,5 +43,5 @@ export interface CardFooterProps {
 }
 
 export const CardFooter = ({ children, className = '' }: CardFooterProps) => {
-  return <div className={`card__footer ${className}`}>{children}</div>;
+  return <div className={`${styles['card__footer']} ${className}`.trim()}>{children}</div>;
 };

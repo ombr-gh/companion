@@ -2,10 +2,10 @@
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
+}
 
-  :is(--full-width) {
-    width: 100%;
-  }
+.input-wrapper--full-width {
+  width: 100%;
 }
 
 .input-label {
@@ -45,13 +45,13 @@
     cursor: not-allowed;
     border-color: hsl(0, 0%, 14%);
   }
+}
 
-  :is(--error) {
-    border-color: var(--accent-red);
+.input--error {
+  border-color: var(--accent-red);
 
-    &:focus {
-      box-shadow: none;
-    }
+  &:focus {
+    box-shadow: none;
   }
 }
 

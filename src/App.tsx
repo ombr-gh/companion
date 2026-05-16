@@ -8,11 +8,14 @@ import ProfilePage from './pages/profile/Profile';
 import DevicePage from './pages/device/Device';
 import { IconButton } from './components/common';
 import { type DeviceInfo } from './lib/devices';
-import './App.css';
+import { invoke } from '@tauri-apps/api/core';
+import { listen } from '@tauri-apps/api/event';
+import styles from './App.module.css';
 
 function App() {
   const [page, setPage] = useState<CurrentPage>('home');
   const [selectedDevice, setSelectedDevice] = useState<DeviceInfo | null>(null);
+  const [devices, setDevices] = useState<DeviceInfo[]>([]);
   const devicesTabRef = useRef<HTMLButtonElement | null>(null);
   const statsTabRef = useRef<HTMLButtonElement | null>(null);
   const [tabIndicator, setTabIndicator] = useState({ left: 0, width: 0 });
@@ -52,6 +55,60 @@ function App() {
     '--tab-indicator-width': `${tabIndicator.width}px`,
   } as CSSProperties;
 
+  useEffect(() => {
+    let cancelled = false;
+    let unlistenDevices: (() => void) | undefined;
+
+    const seedDevices = async () => {
+      try {
+        const initialDevices = await invoke<DeviceInfo[]>('get_ble_devices');
+
+        if (!cancelled) {
+          setDevices(initialDevices);
+        }
+      } catch (error) {
+        console.error('Failed to load BLE devices', error);
+      }
+    };
+
+    void seedDevices();
+
+    void listen<DeviceInfo[]>('ble-devices-updated', (event) => {
+      setDevices(event.payload);
+    }).then((unlisten) => {
+      if (cancelled) {
+        unlisten();
+        return;
+      }
+
+      unlistenDevices = unlisten;
+    });
+
+    return () => {
+      cancelled = true;
+      unlistenDevices?.();
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!selectedDevice) {
+      return;
+    }
+
+    const refreshedDevice = devices.find((device) => device.id === selectedDevice.id);
+
+    if (refreshedDevice && refreshedDevice !== selectedDevice) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setSelectedDevice(refreshedDevice);
+      return;
+    }
+
+    if (!refreshedDevice && page === 'device') {
+      setSelectedDevice(null);
+      setPage('home');
+    }
+  }, [devices, page, selectedDevice]);
+
   const openDevice = (device: DeviceInfo) => {
     setSelectedDevice(device);
     setPage('device');
@@ -63,27 +120,27 @@ function App() {
 
   return (
     <div
-      className="app-shell"
+      className={styles['app-shell']}
       style={shellStyle}
       onContextMenu={(event) => event.preventDefault()}
     >
-      <header className="app-topbar">
-        <div className="app-topbar__left">
-          <span className="brand-mark">
+      <header className={styles['app-topbar']}>
+        <div className={styles['app-topbar__left']}>
+          <span className={styles['brand-mark']}>
             <img
               src={new URL('./assets/logo.svg', import.meta.url).href}
               alt="Nimbus"
-              className="brand-mark__img"
+              className={styles['brand-mark__img']}
             />
           </span>
 
           <nav
-            className={`app-tabs ${!isPrimaryPage ? 'app-tabs--indicator-hidden' : ''}`}
+            className={`${styles['app-tabs']} ${!isPrimaryPage ? styles['app-tabs--indicator-hidden'] : ''}`}
             aria-label="Primary"
           >
             <button
               ref={devicesTabRef}
-              className={`app-tabs__item ${page === 'home' ? 'app-tabs__item--active' : ''}`}
+              className={`${styles['app-tabs__item']} ${page === 'home' ? styles['app-tabs__item--active'] : ''}`}
               type="button"
               onClick={() => setPage('home')}
               aria-current={page === 'home' ? 'page' : undefined}
@@ -92,26 +149,26 @@ function App() {
             </button>
             <button
               ref={statsTabRef}
-              className={`app-tabs__item ${page === 'stats' ? 'app-tabs__item--active' : ''}`}
+              className={`${styles['app-tabs__item']} ${page === 'stats' ? styles['app-tabs__item--active'] : ''}`}
               type="button"
               onClick={() => setPage('stats')}
               aria-current={page === 'stats' ? 'page' : undefined}
             >
               Stats
             </button>
-            <span className="app-tabs__indicator" aria-hidden="true"></span>
+            <span className={styles['app-tabs__indicator']} aria-hidden="true"></span>
           </nav>
         </div>
 
-        <div className="app-topbar__right">
+        <div className={styles['app-topbar__right']}>
           <IconButton
-            className={`app-icon-button ${page === 'settings' ? 'app-icon-button--active' : ''}`}
+            className={`${styles['app-icon-button']} ${page === 'settings' ? styles['app-icon-button--active'] : ''}`}
             icon={<IconSettings size={18}></IconSettings>}
             onClick={() => setPage('settings')}
             aria-label="Settings"
           ></IconButton>
           <IconButton
-            className={`app-icon-button ${page === 'profile' ? 'app-icon-button--active' : ''}`}
+            className={`${styles['app-icon-button']} ${page === 'profile' ? styles['app-icon-button--active'] : ''}`}
             icon={<IconUserCircle size={18}></IconUserCircle>}
             onClick={() => setPage('profile')}
             aria-label="Account"
@@ -119,8 +176,8 @@ function App() {
         </div>
       </header>
 
-      <main className="app-content">
-        {page === 'home' && <Home onOpenDevice={openDevice} />}
+      <main className={styles['app-content']}>
+        {page === 'home' && <Home devices={devices} onOpenDevice={openDevice} />}
         {page === 'stats' && <StatsPage />}
         {page === 'settings' && <SettingsPage />}
         {page === 'profile' && <ProfilePage />}

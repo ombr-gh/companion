@@ -1,46 +1,51 @@
-import {
-  IconSquareRotated,
-  IconSquareRotatedFilled,
-  IconSquareRoundedFilled,
-} from '@tabler/icons-react';
+import { IconSquareRotated, IconSquareRotatedFilled, IconSquareRotatedForbid } from '@tabler/icons-react';
+import { type ReactNode } from 'react';
 import { DeviceCard } from '../../components/common';
-import { devices, type DeviceInfo } from '../../lib/devices';
-import './Home.css';
+import { DEVICE_MODELS, type DeviceInfo } from '../../lib/devices';
+import styles from './Home.module.css';
 
 interface HomeProps {
-  onOpenDevice: (device: DeviceInfo) => void;
+  readonly devices: DeviceInfo[];
+  readonly onOpenDevice: (device: DeviceInfo) => void;
 }
 
-const getDeviceModelIcon = (modelId: string) => {
-  switch (modelId) {
-    case 'geo-mk1':
-      return <IconSquareRotated size={15} />;
-    case 'geo-mk2':
-      return <IconSquareRotatedFilled size={15} />;
-    case 'geo-mk3':
-      return <IconSquareRoundedFilled size={15} />;
-    default:
-      return null;
+export default function Home({ devices, onOpenDevice }: Readonly<HomeProps>) {
+  function getModelIcon(id: string): ReactNode {
+    switch (id) {
+      case 'geo-mk1':
+        return <IconSquareRotated size={16} />;
+      case 'geo-mk2':
+        return <IconSquareRotatedFilled size={16} />;
+      case 'geo-mk3':
+        return <IconSquareRotatedForbid size={16} />;
+      default:
+        return null;
+    }
   }
-};
 
-export default function Home({ onOpenDevice }: HomeProps) {
   return (
-    <div className="home-page">
-      <div className="home-page__devices">
-        {devices.map((device) => (
-          <DeviceCard
-            key={device.id}
-            name={device.name}
-            model={device.model.name}
-            modelIcon={getDeviceModelIcon(device.model.id)}
-            elevated={true}
-            signalStrength={device.signalStrength}
-            connected={device.connected}
-            onClick={() => onOpenDevice(device)}
-          />
-        ))}
-      </div>
+    <div className={styles['home-page']}>
+      {devices.length > 0 ? (
+        <div className={styles['home-page__devices']}>
+          {devices.map((device) => (
+            <DeviceCard
+              key={device.id}
+              name={device.name}
+              subtitle={DEVICE_MODELS[device.modelId]?.name || 'Unknown device'}
+              subtitleIcon={getModelIcon(device.modelId)}
+              elevated={true}
+              signalStrength={device.signalStrength}
+              connected={device.connected}
+              onClick={() => onOpenDevice(device)}
+            />
+          ))}
+        </div>
+      ) : (
+        <div className={styles['home-page__empty-state']}>
+          <h1>No Geo devices found</h1>
+          <p>Please wait for your device to be found and make sure it's powered on and within range.</p>
+        </div>
+      )}
     </div>
   );
 }

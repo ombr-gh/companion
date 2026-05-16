@@ -1,5 +1,5 @@
-import './Input.css';
 import type { InputHTMLAttributes } from 'react';
+import styles from './Input.module.css';
 
 export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;
@@ -17,14 +17,14 @@ export const Input = ({
   ...props
 }: InputProps) => {
   return (
-    <div className={`input-wrapper ${fullWidth ? 'input-wrapper--full-width' : ''}`}>
-      {label && <label className="input-label">{label}</label>}
+    <div className={`${styles['input-wrapper']} ${fullWidth ? styles['input-wrapper--full-width'] : ''}`.trim()}>
+      {label && <label className={styles['input-label']}>{label}</label>}
       <input
-        className={`input ${error ? 'input--error' : ''} ${className}`}
+        className={`${styles.input} ${error ? styles['input--error'] : ''} ${className}`.trim()}
         {...props}
       />
-      {error && <span className="input-error">{error}</span>}
-      {helperText && !error && <span className="input-helper">{helperText}</span>}
+      {error && <span className={styles['input-error']}>{error}</span>}
+      {helperText && !error && <span className={styles['input-helper']}>{helperText}</span>}
     </div>
   );
 };

@@ -1,10 +1,10 @@
 import { Card, CardBody, CardHeader } from '../../components/common';
-import './Profile.css';
+import styles from './Profile.module.css';
 
 export default function ProfilePage() {
   return (
-    <section className="profile-page" aria-label="Profile">
-      <Card elevated className="profile-page__card">
+    <section className={styles['profile-page']} aria-label="Profile">
+      <Card elevated className={styles['profile-page__card']}>
         <CardHeader>
           <h1>Profile</h1>
         </CardHeader>
