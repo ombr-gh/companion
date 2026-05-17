@@ -68,6 +68,7 @@
 
 .device-page__content-header {
   margin-bottom: 1.3rem;
+  margin-top: 0.45rem;
 }
 
 .device-page__content-header h1 {
@@ -76,10 +77,6 @@
   font-size: 2rem;
   line-height: 1.08;
   font-weight: 500;
-}
-
-.device-page__content-header .device-page__description {
-  margin-top: 0.45rem;
 }
 
 .device-page__stacked-grid {
@@ -125,12 +122,6 @@
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.12em;
-}
-
-.device-page__description {
-  max-width: 34rem;
-  color: var(--text-muted);
-  font-size: 1rem;
 }
 
 .device-page__metrics {
@@ -213,48 +204,10 @@
   font-weight: 500;
 }
 
-.device-page__activity {
-  display: flex;
-  flex-direction: column;
-  gap: 0.9rem;
-}
-
-.device-page__activity p {
-  color: var(--text-muted);
-  font-size: 0.96rem;
-  line-height: 1.55;
-}
-
 .device-page__control-list {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 0.8rem;
-}
-
-.device-page__action-button {
-  border: 1px solid var(--border-subtle);
-  border-radius: 0.95rem;
-  background: var(--bg-surface);
-  color: var(--text-primary);
-  padding: 0.95rem 1rem;
-  font-size: 0.95rem;
-  font-weight: 600;
-  text-align: left;
-  cursor: pointer;
-  transition:
-    border-color 0.2s ease,
-    transform 0.2s ease,
-    background-color 0.2s ease;
-}
-
-.device-page__action-button:hover {
-  border-color: color-mix(
-    in srgb,
-    var(--text-primary) 18%,
-    var(--border-subtle)
-  );
-  background: color-mix(in srgb, var(--bg-elevated) 82%, transparent);
-  transform: translateY(-1px);
 }
 
 .device-page__reading-list {

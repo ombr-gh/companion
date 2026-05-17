@@ -7,9 +7,15 @@ import {
   IconGauge,
   IconSettings,
   IconWifiOff,
+  IconRefresh,
+  IconTrash,
+  IconLock,
+  IconWifi,
 } from '@tabler/icons-react';
 import { useState, type ComponentType } from 'react';
 import { formatLastSeen, formatRssi, signalStrengthLabel, type DeviceInfo } from '../../lib/devices';
+import { Button, ConfirmDialog, Modal, Input } from '../../components/common';
+import { invoke } from '@tauri-apps/api/core';
 import styles from './Device.module.css';
 
 interface DevicePageProps {
@@ -28,8 +34,92 @@ const sections: Array<{ id: DeviceSection; label: string; icon: ComponentType<{ 
 
 export default function DevicePage({ device, onBack }: Readonly<DevicePageProps>) {
   const [activeSection, setActiveSection] = useState<DeviceSection>('dashboard');
+  const [isRestarting, setIsRestarting] = useState(false);
+  const [isResetDialogOpen, setIsResetDialogOpen] = useState(false);
+  const [isResetting, setIsResetResetting] = useState(false);
+  const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
+  const [isChangingPassword, setIsChangingPassword] = useState(false);
+  const [currentPassword, setCurrentPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [passwordError, setPasswordError] = useState<string | null>(null);
+
+  const [isWifiModalOpen, setIsWifiModalOpen] = useState(false);
+  const [isUpdatingWifi, setIsUpdatingWifi] = useState(false);
+  const [wifiSsid, setWifiSsid] = useState('');
+  const [wifiPassword, setWifiPassword] = useState('');
+  const [wifiError, setWifiError] = useState<string | null>(null);
 
   const activeSectionLabel = sections.find((section) => section.id === activeSection)?.label ?? 'Dashboard';
+
+  const handleRestart = async () => {
+    setIsRestarting(true);
+    try {
+      await invoke('restart_ble_device', { deviceId: device.id });
+    } catch (error) {
+      console.error('Failed to restart device:', error);
+    } finally {
+      setIsRestarting(false);
+    }
+  };
+
+  const handleFactoryReset = async () => {
+    setIsResetResetting(true);
+    try {
+      await invoke('factory_reset_ble_device', { deviceId: device.id });
+      onBack();
+    } catch (error) {
+      console.error('Failed to factory reset device:', error);
+    } finally {
+      setIsResetResetting(false);
+      setIsResetDialogOpen(false);
+    }
+  };
+
+  const handleChangePassword = async () => {
+    if (newPassword.length < 8) {
+      setPasswordError('New password must be at least 8 characters');
+      return;
+    }
+    setIsChangingPassword(true);
+    setPasswordError(null);
+    try {
+      await invoke('change_ble_device_password', {
+        deviceId: device.id,
+        currentPassword,
+        newPassword,
+      });
+      setIsPasswordModalOpen(false);
+      setCurrentPassword('');
+      setNewPassword('');
+    } catch (error) {
+      setPasswordError(typeof error === 'string' ? error : 'Failed to change password');
+    } finally {
+      setIsChangingPassword(false);
+    }
+  };
+
+  const handleWifiUpdate = async () => {
+    if (wifiSsid.trim().length === 0) {
+      setWifiError('SSID cannot be empty');
+      return;
+    }
+    setIsUpdatingWifi(true);
+    setWifiError(null);
+    try {
+      await invoke('update_ble_device_wifi', {
+        deviceId: device.id,
+        ssid: wifiSsid.trim(),
+        password: wifiPassword,
+      });
+      setIsWifiModalOpen(false);
+      setWifiSsid('');
+      setWifiPassword('');
+    } catch (error) {
+      setWifiError(typeof error === 'string' ? error : 'Failed to update Wi-Fi');
+    } finally {
+      setIsUpdatingWifi(false);
+    }
+  };
 
   const dashboardSection = (
     <div className={styles['device-page__stacked-grid']}>
@@ -66,21 +156,108 @@ export default function DevicePage({ device, onBack }: Readonly<DevicePageProps>
   const controlsSection = (
     <div className={styles['device-page__stacked-grid']}>
       <article className={styles['device-page__panel']}>
-        <h2>Controls</h2>
+        <h2>System Controls</h2>
         <div className={styles['device-page__control-list']}>
-          <button className={styles['device-page__action-button']} type="button">Rescan nearby devices</button>
-          <button className={styles['device-page__action-button']} type="button">Copy BLE address</button>
-          <button className={styles['device-page__action-button']} type="button">Inspect services</button>
-          <button className={styles['device-page__action-button']} type="button">Pin device</button>
+          <Button
+            variant="secondary"
+            onClick={handleRestart}
+            isLoading={isRestarting}
+          >
+            <IconRefresh size={16} />
+            Restart device
+          </Button>
+          <Button
+            variant="secondary"
+            onClick={() => setIsWifiModalOpen(true)}
+          >
+            <IconWifi size={16} />
+            Update Wi-Fi
+          </Button>
+          <Button
+            variant="secondary"
+            onClick={() => setIsPasswordModalOpen(true)}
+          >
+            <IconLock size={16} />
+            Change password
+          </Button>
+          <Button
+            variant="danger"
+            onClick={() => setIsResetDialogOpen(true)}
+          >
+            <IconTrash size={16} />
+            Factory reset
+          </Button>
         </div>
       </article>
 
-      <article className={styles['device-page__panel']}>
-        <h2>Quick actions</h2>
-        <div className={styles['device-page__activity']}>
-          <p>Use these actions to validate advertisement visibility, confirm a stable RSSI, or capture the BLE identifiers for follow-up work.</p>
+      <ConfirmDialog
+        isOpen={isResetDialogOpen}
+        title="Factory Reset"
+        confirmText="Reset device"
+        isDangerous={true}
+        isLoading={isResetting}
+        onConfirm={handleFactoryReset}
+        onCancel={() => setIsResetDialogOpen(false)}
+      >
+        <p>Are you sure you want to factory reset this device? This will erase all Wi-Fi settings and credentials. You will need to set up the device again.</p>
+      </ConfirmDialog>
+
+      <Modal
+        isOpen={isPasswordModalOpen}
+        title="Change Device Password"
+        onClose={() => setIsPasswordModalOpen(false)}
+        onConfirm={handleChangePassword}
+        isLoading={isChangingPassword}
+        confirmText="Update password"
+      >
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+          <Input
+            label="Current password"
+            type="password"
+            value={currentPassword}
+            onChange={(e) => setCurrentPassword(e.target.value)}
+            placeholder="Enter current password"
+          />
+          <Input
+            label="New password"
+            type="password"
+            value={newPassword}
+            onChange={(e) => setNewPassword(e.target.value)}
+            placeholder="Enter new password (min 8 chars)"
+          />
+          {passwordError && (
+            <p style={{ color: 'var(--color-error)', fontSize: '0.875rem' }}>{passwordError}</p>
+          )}
         </div>
-      </article>
+      </Modal>
+
+      <Modal
+        isOpen={isWifiModalOpen}
+        title="Update Wi-Fi Settings"
+        onClose={() => setIsWifiModalOpen(false)}
+        onConfirm={handleWifiUpdate}
+        isLoading={isUpdatingWifi}
+        confirmText="Update settings"
+      >
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+          <Input
+            label="Wi-Fi SSID"
+            value={wifiSsid}
+            onChange={(e) => setWifiSsid(e.target.value)}
+            placeholder="Enter network name"
+          />
+          <Input
+            label="Wi-Fi Password"
+            type="password"
+            value={wifiPassword}
+            onChange={(e) => setWifiPassword(e.target.value)}
+            placeholder="Enter network password"
+          />
+          {wifiError && (
+            <p style={{ color: 'var(--color-error)', fontSize: '0.875rem' }}>{wifiError}</p>
+          )}
+        </div>
+      </Modal>
     </div>
   );
 
@@ -182,11 +359,8 @@ export default function DevicePage({ device, onBack }: Readonly<DevicePageProps>
 
         <div className={styles['device-page__content']}>
           <div className={styles['device-page__content-header']}>
-            <p className={styles['device-page__eyebrow']}>Device view</p>
+            <p className={styles['device-page__eyebrow']}>{device.name}</p>
             <h1>{activeSectionLabel}</h1>
-            <p className={styles['device-page__description']}>
-              {device.name} · {device.address}
-            </p>
           </div>
 
           {activeSection === 'dashboard' && dashboardSection}

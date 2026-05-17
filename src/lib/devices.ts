@@ -14,6 +14,7 @@ export interface DeviceInfo {
   rssi: number | null;
   signalStrength: number;
   connected: boolean;
+  authenticated: boolean;
   connectable: boolean;
   lastSeenSecondsAgo: number;
   txPowerLevel: number | null;

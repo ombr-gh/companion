@@ -2,7 +2,15 @@ import { useState } from 'react';
 import { IconArrowLeft, IconCheck, IconDeviceDesktop, IconShieldCheck, IconWifi } from '@tabler/icons-react';
 import { Button, Card, CardBody, CardFooter, CardHeader, Input, Toggle } from '../../components/common';
 import { type DeviceInfo } from '../../lib/devices';
+import { invoke } from '@tauri-apps/api/core';
 import styles from './Setup.module.css';
+
+interface BleConnectionState {
+  connected: boolean;
+  authenticated: boolean;
+  setupComplete: boolean;
+  deviceName: string;
+}
 
 interface SetupPageProps {
   readonly device: DeviceInfo;
@@ -40,6 +48,8 @@ export default function SetupPage({ device, onBack, onComplete }: Readonly<Setup
   const [wifiPassword, setWifiPassword] = useState('');
   const [devicePassword, setDevicePassword] = useState('');
   const [agreedToTos, setAgreedToTos] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const currentStepIndex = stepOrder.indexOf(step);
   const isFirstStep = step === 'intro';
@@ -72,12 +82,32 @@ export default function SetupPage({ device, onBack, onComplete }: Readonly<Setup
     }
   };
 
-  const finishSetup = () => {
-    onComplete({
-      ...device,
-      name: deviceName.trim() || device.name,
-      setupComplete: true,
-    });
+  const finishSetup = async () => {
+    setIsSubmitting(true);
+    setSubmitError(null);
+
+    try {
+      const connection = await invoke<BleConnectionState>('submit_ble_setup', {
+        deviceId: device.id,
+        deviceName: deviceName.trim() || device.name,
+        wifiSsid: wifiSsid.trim(),
+        wifiPassword,
+        devicePassword,
+      });
+
+      onComplete({
+        ...device,
+        name: connection.deviceName || deviceName.trim() || device.name,
+        setupComplete: connection.setupComplete,
+        connected: connection.connected,
+        authenticated: connection.authenticated,
+      });
+    } catch (invokeError) {
+      console.debug('Setup submission failed', invokeError);
+      setSubmitError(typeof invokeError === 'string' ? invokeError : String(invokeError));
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const renderStepContent = () => {
@@ -222,7 +252,9 @@ export default function SetupPage({ device, onBack, onComplete }: Readonly<Setup
     primaryAction = goToNextStep;
     primaryActionLabel = 'Start setup';
   } else if (step === 'review') {
-    primaryAction = finishSetup;
+    primaryAction = () => {
+      void finishSetup();
+    };
     primaryActionLabel = 'Finish setup';
   }
   const heroTitle = isIntro ? 'Set it up' : `Set up ${device.name}`;
@@ -307,10 +339,16 @@ export default function SetupPage({ device, onBack, onComplete }: Readonly<Setup
             <Button variant="secondary" type="button" onClick={goToPreviousStep}>
               Back
             </Button>
-            <Button type="button" onClick={primaryAction} disabled={!canContinue}>
+            <Button type="button" onClick={primaryAction} disabled={!canContinue} isLoading={step === 'review' && isSubmitting}>
               {primaryActionLabel}
             </Button>
           </CardFooter>
+
+          {submitError ? (
+            <p className={styles['setup-page__submit-error']} role="alert">
+              {submitError}
+            </p>
+          ) : null}
         </Card>
       )}
     </section>

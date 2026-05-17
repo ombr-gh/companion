@@ -15,9 +15,15 @@ export const Button = ({
   className = '',
   ...props
 }: ButtonProps) => {
+  const variantClass = styles[`button--${variant}`];
+  const fullWidthClass = fullWidth ? styles['button--full-width'] : '';
+  const buttonClasses = [styles.button, variantClass, fullWidthClass, className]
+    .filter(Boolean)
+    .join(' ');
+
   return (
     <button
-      className={`${styles.button} ${styles[`button--${variant}`]} ${fullWidth ? styles['button--full-width'] : ''} ${className}`.trim()}
+      className={buttonClasses}
       disabled={disabled || isLoading}
       {...props}
     >

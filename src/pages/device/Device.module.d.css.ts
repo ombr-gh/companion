@@ -7,7 +7,6 @@ declare const classNames: {
   readonly "device-page__nav-item--active": "device-page__nav-item--active";
   readonly "device-page__content": "device-page__content";
   readonly "device-page__content-header": "device-page__content-header";
-  readonly "device-page__description": "device-page__description";
   readonly "device-page__stacked-grid": "device-page__stacked-grid";
   readonly "device-page__back": "device-page__back";
   readonly "device-page__hero": "device-page__hero";
@@ -18,9 +17,7 @@ declare const classNames: {
   readonly "device-page__metric-label": "device-page__metric-label";
   readonly "device-page__definition-list": "device-page__definition-list";
   readonly "device-page__definition-list--wide": "device-page__definition-list--wide";
-  readonly "device-page__activity": "device-page__activity";
   readonly "device-page__control-list": "device-page__control-list";
-  readonly "device-page__action-button": "device-page__action-button";
   readonly "device-page__reading-list": "device-page__reading-list";
   readonly "device-page__setting-row": "device-page__setting-row";
   readonly "device-page__setting-list": "device-page__setting-list";

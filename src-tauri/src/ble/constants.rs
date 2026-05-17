@@ -1,0 +1,29 @@
+use std::time::Duration;
+
+pub const BLE_DEVICES_UPDATED_EVENT: &str = "ble-devices-updated";
+pub const DEVICE_RETENTION_WINDOW: Duration = Duration::from_secs(30);
+pub const SCAN_INTERVAL: Duration = Duration::from_secs(3);
+pub const COMMAND_TIMEOUT: Duration = Duration::from_secs(5);
+
+pub const COMMAND_GET_STATUS: u8 = 0x01;
+pub const COMMAND_AUTHENTICATE: u8 = 0x02;
+pub const COMMAND_APPLY_SETUP: u8 = 0x03;
+pub const COMMAND_RESTART: u8 = 0x04;
+pub const COMMAND_FACTORY_RESET: u8 = 0x05;
+pub const COMMAND_CHANGE_PASSWORD: u8 = 0x06;
+pub const COMMAND_UPDATE_WIFI: u8 = 0x07;
+
+pub const RESPONSE_STATUS: u8 = 0x81;
+pub const RESPONSE_AUTH_OK: u8 = 0x82;
+pub const RESPONSE_AUTH_FAILED: u8 = 0x83;
+pub const RESPONSE_SETUP_OK: u8 = 0x84;
+pub const RESPONSE_RESTART_OK: u8 = 0x85;
+pub const RESPONSE_FACTORY_RESET_OK: u8 = 0x86;
+pub const RESPONSE_CHANGE_PASSWORD_OK: u8 = 0x87;
+pub const RESPONSE_SETUP_FAILED: u8 = 0x88;
+pub const RESPONSE_UPDATE_WIFI_OK: u8 = 0x89;
+
+pub const FIRMWARE_SERVICE_UUID: &str = "01171718-ce62-6a9a-5541-b839b04a7bd1";
+pub const FIRMWARE_RX_CHARACTERISTIC_UUID: &str = "02171718-ce62-6a9a-5541-b839b04a7bd1";
+pub const FIRMWARE_TX_CHARACTERISTIC_UUID: &str = "03171718-ce62-6a9a-5541-b839b04a7bd1";
+pub const FIRMWARE_MANUFACTURER_ID: u16 = 0x4F4D;

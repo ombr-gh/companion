@@ -7,6 +7,7 @@ import SettingsPage from './pages/settings/Settings';
 import ProfilePage from './pages/profile/Profile';
 import DevicePage from './pages/device/Device';
 import SetupPage from './pages/setup/Setup';
+import AuthPage from './pages/auth/Auth';
 import { IconButton } from './components/common';
 import { type DeviceInfo } from './lib/devices';
 import { invoke } from '@tauri-apps/api/core';
@@ -109,7 +110,7 @@ function App() {
       return;
     }
 
-    if (!refreshedDevice && (page === 'device' || page === 'setup')) {
+    if (!refreshedDevice && (page === 'device' || page === 'setup' || page === 'auth')) {
       setSelectedDevice(null);
       setPage('home');
     }
@@ -117,7 +118,11 @@ function App() {
 
   const openDevice = (device: DeviceInfo) => {
     setSelectedDevice(device);
-    setPage(device.setupComplete ? 'device' : 'setup');
+    if (device.authenticated) {
+        setPage('device');
+    } else {
+        setPage(device.setupComplete ? 'auth' : 'setup');
+    }
   };
 
   const goBackToDevices = () => {
@@ -125,6 +130,14 @@ function App() {
   };
 
   const completeDeviceSetup = (updatedDevice: DeviceInfo) => {
+    setDevices((currentDevices) =>
+      currentDevices.map((device) => (device.id === updatedDevice.id ? updatedDevice : device)),
+    );
+    setSelectedDevice(updatedDevice);
+    setPage('device');
+  };
+
+  const completeDeviceAuth = (updatedDevice: DeviceInfo) => {
     setDevices((currentDevices) =>
       currentDevices.map((device) => (device.id === updatedDevice.id ? updatedDevice : device)),
     );
@@ -207,6 +220,14 @@ function App() {
             device={selectedDevice}
             onBack={goBackToDevices}
             onComplete={completeDeviceSetup}
+          />
+        ) : null}
+        {page === 'auth' && selectedDevice ? (
+          <AuthPage
+            key={selectedDevice.id}
+            device={selectedDevice}
+            onBack={goBackToDevices}
+            onAuthenticated={completeDeviceAuth}
           />
         ) : null}
         {page === 'device' && selectedDevice ? (

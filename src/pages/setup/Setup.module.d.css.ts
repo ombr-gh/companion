@@ -19,5 +19,6 @@ declare const classNames: {
   readonly "setup-page__tos-card": "setup-page__tos-card";
   readonly "setup-page__tos-card--active": "setup-page__tos-card--active";
   readonly "setup-page__summary": "setup-page__summary";
+  readonly "setup-page__submit-error": "setup-page__submit-error";
 };
 export = classNames;

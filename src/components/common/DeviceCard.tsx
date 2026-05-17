@@ -63,7 +63,7 @@ export const DeviceCard = ({
           {subtitle ? (
             <div className={styles['device-card__model-info']}>
               {subtitleIcon ? <span className={styles['device-card__model-icon']}>{subtitleIcon}</span> : null}
-              <span className={styles['device-card__model']}>{setupComplete ? '' : 'Unconfigured '}{subtitle}</span>
+              <span className={styles['device-card__model']}>{setupComplete ? subtitle : `Unconfigured ${subtitle}`}</span>
             </div>
           ) : null}
         </div>

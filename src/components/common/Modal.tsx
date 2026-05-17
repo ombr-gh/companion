@@ -13,6 +13,7 @@ export interface ModalProps {
   cancelText?: string;
   showCancel?: boolean;
   isDangerous?: boolean;
+  isLoading?: boolean;
   size?: 'sm' | 'md' | 'lg';
 }
 
@@ -26,6 +27,7 @@ export const Modal = ({
   cancelText = 'Cancel',
   showCancel = true,
   isDangerous = false,
+  isLoading = false,
   size = 'md',
 }: ModalProps) => {
   useEffect(() => {
@@ -55,7 +57,7 @@ export const Modal = ({
 
   return (
     <div className={styles['modal-backdrop']} onClick={handleBackdropClick}>
-      <div className={`${styles.modal} ${styles[`modal--${size}`]}`}>
+      <div className={styles.modal + ' ' + styles['modal--' + size]}>
         {title && (
           <div className={styles['modal__header']}>
             <h2 className={styles['modal__title']}>{title}</h2>
@@ -76,6 +78,7 @@ export const Modal = ({
               <Button
                 variant={isDangerous ? 'danger' : 'primary'}
                 onClick={handleConfirm}
+                isLoading={isLoading}
               >
                 {confirmText}
               </Button>

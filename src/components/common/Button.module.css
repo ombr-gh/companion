@@ -58,7 +58,6 @@
 .button--danger {
   background-color: var(--accent-red);
   color: var(--bg-base);
-  font-weight: 600;
 
   &:hover:not(:disabled) {
     background-color: hsla(4, 100%, 76%, 1);
@@ -73,12 +72,13 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  min-width: 1.5rem;
 }
 
 .button__loader-spinner {
   display: inline-block;
-  width: 1em;
-  height: 1em;
+  width: 1rem;
+  height: 1rem;
   border: 2px solid currentColor;
   border-right-color: transparent;
   border-radius: 50%;
