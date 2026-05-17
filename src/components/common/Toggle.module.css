@@ -23,7 +23,7 @@
 }
 
 .settings-switch--on {
-  background: var(--status-error);
+  background: var(--status-success);
 }
 
 .settings-switch--on span {

@@ -6,6 +6,7 @@ import StatsPage from './pages/stats/Stats';
 import SettingsPage from './pages/settings/Settings';
 import ProfilePage from './pages/profile/Profile';
 import DevicePage from './pages/device/Device';
+import SetupPage from './pages/setup/Setup';
 import { IconButton } from './components/common';
 import { type DeviceInfo } from './lib/devices';
 import { invoke } from '@tauri-apps/api/core';
@@ -108,7 +109,7 @@ function App() {
       return;
     }
 
-    if (!refreshedDevice && page === 'device') {
+    if (!refreshedDevice && (page === 'device' || page === 'setup')) {
       setSelectedDevice(null);
       setPage('home');
     }
@@ -116,11 +117,19 @@ function App() {
 
   const openDevice = (device: DeviceInfo) => {
     setSelectedDevice(device);
-    setPage('device');
+    setPage(device.setupComplete ? 'device' : 'setup');
   };
 
   const goBackToDevices = () => {
     setPage('home');
+  };
+
+  const completeDeviceSetup = (updatedDevice: DeviceInfo) => {
+    setDevices((currentDevices) =>
+      currentDevices.map((device) => (device.id === updatedDevice.id ? updatedDevice : device)),
+    );
+    setSelectedDevice(updatedDevice);
+    setPage('device');
   };
 
   return (
@@ -192,6 +201,14 @@ function App() {
         {page === 'stats' && <StatsPage />}
         {page === 'settings' && <SettingsPage />}
         {page === 'profile' && <ProfilePage />}
+        {page === 'setup' && selectedDevice ? (
+          <SetupPage
+            key={selectedDevice.id}
+            device={selectedDevice}
+            onBack={goBackToDevices}
+            onComplete={completeDeviceSetup}
+          />
+        ) : null}
         {page === 'device' && selectedDevice ? (
           <DevicePage device={selectedDevice} onBack={goBackToDevices} />
         ) : null}

@@ -16,6 +16,7 @@ export interface DeviceCardProps {
   elevated?: boolean;
   signalStrength: number; // 0 to 5
   connected: boolean;
+  setupComplete: boolean;
   subtitle?: string;
   subtitleIcon?: React.ReactNode;
 }
@@ -26,6 +27,7 @@ export const DeviceCard = ({
   elevated = false,
   signalStrength,
   connected,
+  setupComplete,
   subtitle,
   subtitleIcon,
 }: DeviceCardProps) => {
@@ -61,7 +63,7 @@ export const DeviceCard = ({
           {subtitle ? (
             <div className={styles['device-card__model-info']}>
               {subtitleIcon ? <span className={styles['device-card__model-icon']}>{subtitleIcon}</span> : null}
-              <span className={styles['device-card__model']}>{subtitle}</span>
+              <span className={styles['device-card__model']}>{setupComplete ? '' : 'Unconfigured '}{subtitle}</span>
             </div>
           ) : null}
         </div>

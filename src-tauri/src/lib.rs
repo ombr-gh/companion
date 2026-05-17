@@ -46,6 +46,7 @@ struct BleDeviceSnapshot {
     id: String,
     name: String,
     model_id: String,
+    setup_complete: bool,
     address: String,
     rssi: Option<i16>,
     signal_strength: u8,
@@ -153,6 +154,7 @@ async fn scan_ble_devices(app: AppHandle, store: BleDeviceStore) -> Result<(), S
             let signal_strength = signal_strength_from_rssi(rssi);
             let model_id = "geo-mk1".to_string();
             let connectable = properties.rssi.is_some();
+            let setup_complete = false;
             let manufacturer_data = properties
                 .manufacturer_data
                 .iter()
@@ -165,6 +167,7 @@ async fn scan_ble_devices(app: AppHandle, store: BleDeviceStore) -> Result<(), S
                 name,
                 address: address.clone(),
                 model_id,
+                setup_complete,
                 rssi,
                 signal_strength,
                 connected: false,

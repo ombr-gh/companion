@@ -9,6 +9,7 @@ export interface DeviceInfo {
   id: string;
   name: string;
   modelId: DeviceModelId;
+  setupComplete: boolean;
   address: string;
   rssi: number | null;
   signalStrength: number;
