@@ -5,7 +5,7 @@ use std::time::Instant;
 use tauri::{AppHandle, Emitter};
 
 use super::constants::{
-    DEVICE_RETENTION_WINDOW, FIRMWARE_MANUFACTURER_ID, FIRMWARE_SERVICE_UUID, SCAN_INTERVAL,
+    DEVICE_RETENTION_WINDOW, FIRMWARE_MANUFACTURER_ID, SCAN_INTERVAL,
 };
 use super::state::{upsert_live_peripheral, BleDeviceSnapshot, BleDeviceStore};
 
@@ -42,15 +42,6 @@ pub async fn scan_ble_devices(app: AppHandle, store: BleDeviceStore) -> Result<(
                 .iter()
                 .map(|service_uuid| service_uuid.to_string())
                 .collect::<Vec<_>>();
-            let advertised_manufacturer_ids = properties
-                .manufacturer_data
-                .keys()
-                .map(|company_id| format!("0x{company_id:04x}"))
-                .collect::<Vec<_>>();
-
-            let has_firmware_service_uuid = advertised_service_uuids
-                .iter()
-                .any(|service_uuid| service_uuid == FIRMWARE_SERVICE_UUID);
             let has_firmware_manufacturer_marker = properties
                 .manufacturer_data
                 .contains_key(&FIRMWARE_MANUFACTURER_ID);

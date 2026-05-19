@@ -408,18 +408,18 @@ async fn discover_peripheral(device_id: &str) -> Option<Peripheral> {
         };
 
         for peripheral in peripherals {
-            let properties = match peripheral.properties().await {
-                Ok(Some(properties)) => properties,
+            match peripheral.properties().await {
+                Ok(Some(_)) => {
+                    if peripheral.id().to_string() == device_id {
+                        eprintln!("[ble] discovered peripheral on attempt {attempt}");
+                        return Some(peripheral);
+                    }
+                }
                 Ok(None) => continue,
                 Err(error) => {
                     eprintln!("[ble] property lookup attempt {attempt} failed: {error}");
                     continue;
                 }
-            };
-
-                if peripheral.id().to_string() == device_id {
-                eprintln!("[ble] discovered peripheral on attempt {attempt}");
-                return Some(peripheral);
             }
         }
 
