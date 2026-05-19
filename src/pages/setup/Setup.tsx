@@ -209,7 +209,7 @@ export default function SetupPage({ device, onBack, onComplete }: Readonly<Setup
                 <strong>I agree to the terms of service</strong>
                 <span>Required to proceed with setup.</span>
               </div>
-              <Toggle checked={agreedToTos} onChange={() => setAgreedToTos((current) => !current)} />
+              <Toggle color='green' checked={agreedToTos} onChange={() => setAgreedToTos((current) => !current)} />
             </div>
           </div>
         );

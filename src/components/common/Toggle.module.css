@@ -23,6 +23,10 @@
 }
 
 .settings-switch--on {
+  background: var(--status-error);
+}
+
+.settings-switch--on.settings-switch--on__green {
   background: var(--status-success);
 }
 
