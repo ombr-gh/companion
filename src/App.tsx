@@ -9,10 +9,12 @@ import DevicePage from './pages/device/Device';
 import SetupPage from './pages/setup/Setup';
 import AuthPage from './pages/auth/Auth';
 import { IconButton } from './components/common';
+import { LiquidChromeLogo } from 'liquidity-react';
 import { type DeviceInfo } from './lib/devices';
 import { invoke } from '@tauri-apps/api/core';
 import { listen } from '@tauri-apps/api/event';
 import styles from './App.module.css';
+import logo from './assets/logo.svg';
 
 function App() {
   const [page, setPage] = useState<CurrentPage>('home');
@@ -119,9 +121,9 @@ function App() {
   const openDevice = (device: DeviceInfo) => {
     setSelectedDevice(device);
     if (device.authenticated) {
-        setPage('device');
+      setPage('device');
     } else {
-        setPage(device.setupComplete ? 'auth' : 'setup');
+      setPage(device.setupComplete ? 'auth' : 'setup');
     }
   };
 
@@ -129,15 +131,7 @@ function App() {
     setPage('home');
   };
 
-  const completeDeviceSetup = (updatedDevice: DeviceInfo) => {
-    setDevices((currentDevices) =>
-      currentDevices.map((device) => (device.id === updatedDevice.id ? updatedDevice : device)),
-    );
-    setSelectedDevice(updatedDevice);
-    setPage('device');
-  };
-
-  const completeDeviceAuth = (updatedDevice: DeviceInfo) => {
+  const completeDeviceAuthSetup = (updatedDevice: DeviceInfo) => {
     setDevices((currentDevices) =>
       currentDevices.map((device) => (device.id === updatedDevice.id ? updatedDevice : device)),
     );
@@ -154,11 +148,23 @@ function App() {
       <header className={styles['app-topbar']}>
         <div className={styles['app-topbar__left']}>
           <span className={styles['brand-mark']}>
-            <img
-              src={new URL('./assets/logo.svg', import.meta.url).href}
-              alt="Nimbus"
-              className={styles['brand-mark__img']}
-            />
+            <LiquidChromeLogo
+              svg={logo}
+              size={100}
+              speed={0.25}
+              noiseIntensity={0}
+              scale={4}
+              dotFactor={1.2}
+              dotMultiplier={0.02}
+              vOffset={5}
+              intensityFactor={0.5}
+              expFactor={0.1}
+              redFactor={3}
+              greenFactor={3}
+              blueFactor={3}
+              colorShift={0}
+              logoInteractStrength={0.65}
+              className={styles['brand-mark__img']} />
           </span>
 
           <nav
@@ -219,7 +225,7 @@ function App() {
             key={selectedDevice.id}
             device={selectedDevice}
             onBack={goBackToDevices}
-            onComplete={completeDeviceSetup}
+            onComplete={completeDeviceAuthSetup}
           />
         ) : null}
         {page === 'auth' && selectedDevice ? (
@@ -227,7 +233,7 @@ function App() {
             key={selectedDevice.id}
             device={selectedDevice}
             onBack={goBackToDevices}
-            onAuthenticated={completeDeviceAuth}
+            onAuthenticated={completeDeviceAuthSetup}
           />
         ) : null}
         {page === 'device' && selectedDevice ? (
